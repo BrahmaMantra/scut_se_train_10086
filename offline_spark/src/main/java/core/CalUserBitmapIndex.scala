@@ -4,7 +4,7 @@ import org.apache.spark.{SparkConf, SparkContext}
 import utils.ClickhouseTool
 
 /** 要给每个用户生成唯一id： zipWithUniqueID   :   imsi -- id
- */
+  */
 object CalUserBitmapIndex {
   def main(args: Array[String]): Unit = {
     val conf = new SparkConf()

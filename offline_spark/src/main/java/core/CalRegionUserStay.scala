@@ -12,7 +12,7 @@ import java.util.Properties
 import scala.collection.mutable
 
 /** 执行频率：天
- */
+  */
 object CalRegionUserStay {
   def main(args: Array[String]): Unit = {
     val conf = new SparkConf().setMaster("local")

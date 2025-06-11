@@ -1,12 +1,12 @@
 package dto
 
 case class XDR(
-                imsi: String,
-                laccell: String,
-                lat: Double,
-                lot: Double,
-                startTime: Long
-              )
+    imsi: String,
+    laccell: String,
+    lat: Double,
+    lot: Double,
+    startTime: Long
+)
 
 object XDR {
   def fromKafka(record: String): XDR = {

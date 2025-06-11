@@ -12,18 +12,18 @@ import java.util.Properties
 import scala.collection.mutable
 
 /** 1  1  bitmap 男性
- * 2  0  bitmap 女性
- * 3  10 bitmap  10——20岁
- * 4  20 bitmap  20-40岁
- * 5  40 bitmap  40岁以上
- *
- * 拿到userbitmapindex
- * 确认每一类属性的用户位图
- * 1 、 sql : :类型id，用户id arr
- * 2、 用户id arr --> 用户位图
- *
- * 输出到ck
- */
+  * 2  0  bitmap 女性
+  * 3  10 bitmap  10——20岁
+  * 4  20 bitmap  20-40岁
+  * 5  40 bitmap  40岁以上
+  *
+  * 拿到userbitmapindex
+  * 确认每一类属性的用户位图
+  * 1 、 sql : :类型id，用户id arr
+  * 2、 用户id arr --> 用户位图
+  *
+  * 输出到ck
+  */
 object CalUserPersonBitMap {
   def main(args: Array[String]): Unit = {
     val conf = new SparkConf().setMaster("local")

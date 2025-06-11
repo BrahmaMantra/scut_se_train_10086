@@ -1,10 +1,6 @@
 package dto
 
-case class UserInfo(
-                     imsi: String,
-                     gender: Int,
-                     age: Int
-                   )
+case class UserInfo(imsi: String, gender: Int, age: Int)
 
 object UserInfo {
   def fromStr(record: String): UserInfo = {

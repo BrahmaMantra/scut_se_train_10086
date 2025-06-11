@@ -1,9 +1,6 @@
 package dto
 
-case class RegionCell(
-                       regionId: String,
-                       laccell: String
-                     )
+case class RegionCell(regionId: String, laccell: String)
 
 object RegionCell {
   def fromStr(record: String): RegionCell = {
