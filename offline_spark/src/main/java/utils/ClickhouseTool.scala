@@ -6,7 +6,7 @@ import ru.yandex.clickhouse.settings.ClickHouseQueryParam
 import java.util.Properties
 
 object ClickhouseTool {
-  def getConn()={
+  def getConn() = {
     val url = "jdbc:clickhouse://bigdata01:8123"
     val prop = new Properties()
     prop.setProperty(ClickHouseQueryParam.USER.getKey, "default")
