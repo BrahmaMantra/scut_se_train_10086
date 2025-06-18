@@ -4,19 +4,19 @@
 
 ![](2.png)
 
-#### 1、请根据生成的基础数据，imsi、laccell、latitude、latitude、procedureStartTime写入HDFS用于处理离线任务。
+#### 1、请根据生成的基础数据，imsi、laccell、latitude、latitude、procedureStartTime写入HDFS用于处理离线任务
 
-| imsi	   | laccell	 | latitude	 | latitude	 | procedureStartTime 
+| imsi    | laccell  | latitude  | latitude  | procedureStartTime
 |---------|----------|-----------|-----------|--------------------
-| 用户imsi	 | 基站编码	    | 纬度	       | 经度	       | 进入该基站的时间           
+| 用户imsi  | 基站编码     | 纬度        | 经度        | 进入该基站的时间
 
 请将您的flume.conf的配置文件内容和成功写入HDFS的截图补充填写在这里。并写一段spark代码读取写入的HDFS文件。
 
-#### 2、请根据生成的基础数据，imsi、laccell、latitude、latitude、procedureStartTime写入Kafka用于处理实时任务。
+#### 2、请根据生成的基础数据，imsi、laccell、latitude、latitude、procedureStartTime写入Kafka用于处理实时任务
 
-| imsi	   | laccell	 | latitude	 | latitude	 | procedureStartTime 
+| imsi    | laccell  | latitude  | latitude  | procedureStartTime
 |---------|----------|-----------|-----------|--------------------
-| 用户imsi	 | 基站编码	    | 纬度	       | 经度	       | 进入该基站的时间           
+| 用户imsi  | 基站编码     | 纬度        | 经度        | 进入该基站的时间
 
 请将您的flume.conf配置文件的内容、将数据成功写入Kafka且正常消费Kafka数据的截图补充填写在这里。同时，请提供Kafka中topic的创建以及生产者和消费者的命令。
 
@@ -27,10 +27,10 @@
 #### 准备工作
 
 - 建表语句：
-    - create_namespace('WZMF')
-    - create 'WZMF:TO_MI_EVNT_NS_CELL_IMSI','crowds' 5min基站人员明细表
+  - create_namespace('WZMF')
+  - create 'WZMF:TO_MI_EVNT_NS_CELL_IMSI','crowds' 5min基站人员明细表
 - 插入数据：
-    - hbaseProcess代码包中的 `org\example\dataProcess\imitateDataSource.scala main` 方法提供了明细数据模拟导入
+  - hbaseProcess代码包中的 `org\example\dataProcess\imitateDataSource.scala main` 方法提供了明细数据模拟导入
 
 建表及执行完程序后，我们可以得知WZMF:TO_MI_EVNT_NS_CELL_IMSI表中将会存在如下基站下的人员明细数据，模拟的是2024/5/28至2024/5/29日的数据。
 
@@ -77,7 +77,7 @@ WZMF:TO_H_EVNT_NS_AREA_IMSI表结构如下：
 
 ### 案例二、数据开发-区域人流量汇聚统计
 
-#### 准备工作：
+#### 准备工作
 
 建表语句：
 create 'WZMF:TO_H_EVNT_NS_AREA_IMSI','crowds' 1hour区域人员明细表
@@ -137,21 +137,23 @@ create 'WZMF:TO_H_EVNT_NS_AREA_IMSI','crowds' 1hour区域人员明细表
 核心业务逻辑：根据基站信令数据，统计1分钟内行政区的用户画像情况。例如：男性数量、女性数量、10-20岁人员数量、20-40人员数量、40以上人员数量。
 目的地：HBase。
 
-### 数据：
+### 数据
 
 1） 基站信令数据
 
-| imsi	   | laccell	  | latitude	 | longitude	 | procedureStartTime 
+| imsi    | laccell   | latitude  | longitude  | procedureStartTime
 |---------|-----------|-----------|------------|--------------------
-| 用户imsi	 | 当前小区的LAC	 | 所在基站纬度	   | 所在基站经度	    | 进入基站时间             
+| 用户imsi  | 当前小区的LAC  | 所在基站纬度    | 所在基站经度     | 进入基站时间
 
 2） 用户基础数据
+
 |imsi |gender |age
 |---|---|---
 |用户imsi |男1，女0 |年龄
 
 3） 行政区-基站关系数据
 该数据说明了行政区与laccell的对应关系
+
 |region_id |laccell
 |---|---
 |行政区编号 |基站编号
@@ -168,4 +170,3 @@ create 'WZMF:TO_H_EVNT_NS_AREA_IMSI','crowds' 1hour区域人员明细表
 请将实现的结果截图粘贴在这里
 
 ## 数据可视化（见 Doc 文档 `【第4周】20250611_大数据可视化项目实践操作` ）
-

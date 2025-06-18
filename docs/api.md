@@ -13,10 +13,13 @@
   | produce_hour | string | 是  | 统计小时（yyyyMMddHH） |
   | portrait_id  | int    | 是  | 画像特征ID（如性别/年龄段）  |
 - **请求示例**：
+
   ```shell
   curl -X GET "http://localhost:8080/v1/userCountByRegionAndTime?region_id=3747834968395481088&produce_hour=2025061100&portrait_id=5"
   ```
+
 - **响应示例**：
+
   ```json
   {
     "msg": "",
@@ -40,10 +43,13 @@
   | produce_hour | string | 是  | 统计小时（yyyyMMddHH） |
   | portrait_id  | int    | 是  | 画像特征ID           |
 - **请求示例**：
+
   ```shell
   curl -X GET "http://localhost:8080/v1/userListByRegionAndTime?region_id=3747834968395481088&produce_hour=2025061100&portrait_id=5"
   ```
+
 - **响应示例**：
+
   ```json
   {
     "msg": "",
@@ -65,11 +71,15 @@
   | 参数名       | 类型     | 必填 | 说明     |
     |-----------|--------|----|--------|
   | region_id | string | 是  | 区域唯一标识 |
+
 - **请求示例**：
+
   ```shell
   curl -X GET "http://localhost:8080/v1/regionPortrait?region_id=3747834968395481088"
   ```
+
 - **响应示例**：
+
   ```json
   {
     "msg": "",
@@ -96,10 +106,13 @@
 - **接口地址**：`/v1/allRegionsHeatMap`
 - **请求参数**：无
 - **请求示例**：
+
   ```shell
   curl -X GET "http://localhost:8080/v1/allRegionsHeatMap"
   ```
+
 - **响应示例**：
+
   ```json
   {
     "msg": "",
@@ -139,6 +152,7 @@
   | end_time   | string | 是  | 结束时间（yyyyMMddHH） |
 
 - **响应示例**：
+
   ```json
   [
     {
