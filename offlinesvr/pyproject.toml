@@ -9,3 +9,9 @@ dependencies = [
     "fastapi>=0.115.13",
     "uvicorn[standard]>=0.34.3",
 ]
+
+[tool.uv]
+package = true
+
+[project.scripts]
+start = "main:main"

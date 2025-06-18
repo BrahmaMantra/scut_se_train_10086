@@ -1,6 +1,6 @@
-import src.db.connection as conn
-import src.api_models as models
-from src.db_models import PortraitIdType
+import db.connection as conn
+import api_models as models
+from db_models import PortraitIdType
 
 
 class Service:
