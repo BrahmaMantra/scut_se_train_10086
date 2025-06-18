@@ -1,15 +1,32 @@
-from fastapi import FastAPI, Query
+from fastapi import FastAPI, APIRouter, Depends
 from pydantic import BaseModel
 from typing import List, Optional
 
 app = FastAPI()
+v1_router = APIRouter(prefix="/v1")
 
 
 # DTOs
+
+
+class UserRegionTimePortraitRequest(BaseModel):
+    region_id: str
+    produce_hour: str
+    portrait_id: int
+
+
+class RegionPortraitRequest(BaseModel):
+    region_id: str
+
+
+class UserCountData(BaseModel):
+    cnt: int = 0
+
+
 class UserCountResponse(BaseModel):
     msg: str = ""
     code: int = 200
-    data: dict
+    data: UserCountData
 
 
 class UserListData(BaseModel):
@@ -40,41 +57,34 @@ class RegionPortraitResponse(BaseModel):
     data: RegionPortraitData
 
 
-# APIs
+# v1 路由组
+@v1_router.get("/userCountByRegionAndTime")
+def user_count_by_region_and_time(req: UserRegionTimePortraitRequest = Depends()):
+    # req.region_id, req.produce_hour, req.portrait_id 可直接使用
+    return {"msg": "", "code": 200, "data": {"cnt": 0}}
 
 
-@app.get("/v1/userCountByRegionAndTime", response_model=UserCountResponse)
-def user_count_by_region_and_time(
-    region_id: str = Query(...),
-    produce_hour: str = Query(...),
-    portrait_id: int = Query(...),
-):
-    # TODO: 实现具体逻辑
-    return UserCountResponse(data={"cnt": 0})
+@v1_router.get("/userListByRegionAndTime")
+def user_list_by_region_and_time(req: UserRegionTimePortraitRequest = Depends()):
+    return {"msg": "", "code": 200, "data": {"cnt": 0, "userList": []}}
 
 
-@app.get("/v1/userListByRegionAndTime", response_model=UserListResponse)
-def user_list_by_region_and_time(
-    region_id: str = Query(...),
-    produce_hour: str = Query(...),
-    portrait_id: int = Query(...),
-):
-    # TODO: 实现具体逻辑
-    return UserListResponse(data=UserListData(cnt=0, userList=[]))
+@v1_router.get("/regionPortrait")
+def region_portrait(req: RegionPortraitRequest = Depends()):
+    return {
+        "msg": "",
+        "code": 200,
+        "data": {
+            "regionId": req.region_id,
+            "regionName": "",
+            "man": 0,
+            "women": 0,
+            "age_10_20": 0,
+            "age_20_40": 0,
+            "age_40": 0,
+            "pepCnt": 0,
+        },
+    }
 
 
-@app.get("/v1/regionPortrait", response_model=RegionPortraitResponse)
-def region_portrait(region_id: str = Query(...)):
-    # TODO: 实现具体逻辑
-    return RegionPortraitResponse(
-        data=RegionPortraitData(
-            regionId=region_id,
-            regionName="",
-            man=0,
-            women=0,
-            age_10_20=0,
-            age_20_40=0,
-            age_40=0,
-            pepCnt=0,
-        )
-    )
+app.include_router(v1_router)
