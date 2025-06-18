@@ -38,7 +38,7 @@ WHERE
 
     def query_user_list_by_region_and_time(
         self, region_id: str, produce_hour: str, portrait_id: int
-    ):
+    ) -> models.UserListData:
         sql = """
 "WITH (
     SELECT
@@ -68,7 +68,7 @@ WHERE
             user_id_list.append(row[0])
         return models.UserListData(cnt=cnt, userList=user_id_list)
 
-    def query_region_protrait(self, region_id: str):
+    def query_region_protrait(self, region_id: str) -> models.RegionPortraitData:
         sql = """
 SELECT
     t2.PORTRAIT_ID,
