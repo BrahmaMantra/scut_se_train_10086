@@ -1,5 +1,11 @@
 # 部署说明
 
+## 使用
+
+```bash
+uv run start
+```
+
 ## clickhouse version
 
 <https://clickhouse.com/docs/integrations/python>
