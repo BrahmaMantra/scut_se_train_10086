@@ -6,7 +6,7 @@
 - Long/Int：整型
 - ClickHouseBitmap/UInt32：RoaingBitmap 位图，底层为 ClickHouse 的 UInt32 类型集合
 
-### 1. USER_INDE
+### 1. USER_INDEX
 
 - 来源：core.CalUserBitmapIndex
 - 字段：
