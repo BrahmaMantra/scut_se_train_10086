@@ -17,7 +17,7 @@ import scala.collection.mutable
   * 4  20 bitmap  20-40岁
   * 5  40 bitmap  40岁以上
   *
-  * 拿到userbitmapindex
+ * 拿到 user bitmap index
   * 确认每一类属性的用户位图
   * 1 、 sql : :类型id，用户id arr
   * 2、 用户id arr --> 用户位图
@@ -109,7 +109,7 @@ object CalUserPersonBitMap {
       .sql(sql)
       .rdd
       .foreachPartition(it => {
-        val conn = ClickhouseTool.getConn()
+        val conn = ClickhouseTool.getConn
         it.foreach(row => {
           val id = row.getAs[Int]("PORTRAIT_ID")
           val value = row.getAs[String]("PORTRAIT_VALUE")
@@ -120,7 +120,7 @@ object CalUserPersonBitMap {
           for (x <- bitArr) {
             bitmap.add(x.intValue())
           }
-          val ckbitmap =
+          val ckBitmap =
             ClickHouseBitmap.wrap(bitmap, ClickHouseDataType.UInt32)
           val stmt = conn.prepareStatement(
             s"insert into TA_PORTRAIT_IMSI_BITMAP " +
@@ -128,7 +128,7 @@ object CalUserPersonBitMap {
           )
           stmt.setInt(1, id)
           stmt.setString(2, value)
-          stmt.setObject(3, ckbitmap)
+          stmt.setObject(3, ckBitmap)
           stmt.setString(4, comment)
           stmt.executeUpdate()
           stmt.close()

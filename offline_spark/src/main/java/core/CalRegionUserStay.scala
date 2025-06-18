@@ -81,7 +81,7 @@ object CalRegionUserStay {
       .sql(sql)
       .rdd
       .foreachPartition(it => {
-        val conn = ClickhouseTool.getConn()
+        val conn = ClickhouseTool.getConn
         it.foreach(row => {
           val regionId = row.getAs[String]("regionId")
           val produce_hour = row.getAs[String]("produce_hour")
@@ -91,7 +91,7 @@ object CalRegionUserStay {
           for (x <- bitArr) {
             bitmap.add(x.intValue())
           }
-          val ckbitmap =
+          val ckBitmap =
             ClickHouseBitmap.wrap(bitmap, ClickHouseDataType.UInt32)
           val stmt = conn.prepareStatement(
             s"insert into REGION_ID_IMSI_BITMAP " +
@@ -99,7 +99,7 @@ object CalRegionUserStay {
           )
           stmt.setString(1, regionId)
           stmt.setString(2, produce_hour)
-          stmt.setObject(3, ckbitmap)
+          stmt.setObject(3, ckBitmap)
           stmt.executeUpdate()
           stmt.close()
 

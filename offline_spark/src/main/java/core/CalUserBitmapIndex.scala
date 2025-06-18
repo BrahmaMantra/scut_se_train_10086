@@ -11,7 +11,7 @@ object CalUserBitmapIndex {
     conf.setAppName("CalUserBitmapIndex").setMaster("local")
     val sc = new SparkContext(conf)
 
-    val imsiId = sc
+    val _imsiId = sc
       .textFile("hdfs://bigdata01:9000/data/userInfo")
       .map(line => {
         val arr = line.split("\\|")
@@ -21,7 +21,7 @@ object CalUserBitmapIndex {
       .zipWithUniqueId()
       //      .collect().foreach(println)
       .foreachPartition(it => {
-        val conn = ClickhouseTool.getConn()
+        val conn = ClickhouseTool.getConn
         val stmt = conn.createStatement()
         it.foreach(tup => {
           val imsi = tup._1
