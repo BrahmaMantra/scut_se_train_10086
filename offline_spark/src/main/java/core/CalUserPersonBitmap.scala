@@ -24,7 +24,7 @@ import scala.collection.mutable
   *
   * 输出到ck
   */
-object CalUserPersonBitMap {
+object CalUserPersonBitmap {
   def main(args: Array[String]): Unit = {
     val conf = new SparkConf().setMaster("local")
     val sparkSession = SparkSession

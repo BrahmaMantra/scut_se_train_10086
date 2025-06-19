@@ -22,7 +22,7 @@ object CalRegionUserStay {
       .config(conf)
       .getOrCreate()
 
-    val xdrPath = "hdfs://bigdata01:9000/xdr/20230204/*"
+    val xdrPath = "hdfs://bigdata01:9000/xdr/20301127/*"
     val xdrStruct = new StructType()
       .add("imsi", StringType)
       .add("laccell", StringType)
