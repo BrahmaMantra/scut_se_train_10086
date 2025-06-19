@@ -1,14 +1,11 @@
 package core
 
-import com.clickhouse.client.ClickHouseDataType
-import com.clickhouse.client.data.ClickHouseBitmap
 import org.apache.spark.SparkConf
 import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.types.{IntegerType, StringType, StructType}
-import org.roaringbitmap.RoaringBitmap
+import utils.BitmapUtils
 import utils.ClickhouseTool
 
-import java.util.Properties
 import scala.collection.mutable
 
 /** 1  1  bitmap 男性
@@ -17,7 +14,7 @@ import scala.collection.mutable
   * 4  20 bitmap  20-40岁
   * 5  40 bitmap  40岁以上
   *
- * 拿到 user bitmap index
+  * 拿到 user bitmap index
   * 确认每一类属性的用户位图
   * 1 、 sql : :类型id，用户id arr
   * 2、 用户id arr --> 用户位图
@@ -29,7 +26,7 @@ object CalUserPersonBitmap {
     val conf = new SparkConf().setMaster("local")
     val sparkSession = SparkSession
       .builder()
-      .appName("CalUserPersonBitMap")
+      .appName("CalUserPersonBitmap")
       .config(conf)
       .getOrCreate()
 
@@ -45,13 +42,8 @@ object CalUserPersonBitmap {
       .load("hdfs://bigdata01:9000/data/userInfo")
 
     userInfoDf.createOrReplaceTempView("user_info")
-    //加载用户位图索引数据
-    val url = "jdbc:clickhouse://bigdata01:8123"
-    val prop = new Properties()
-    prop.setProperty("user", "default")
-    prop.setProperty("password", "clickhouse")
 
-    val userBitmapIndex = sparkSession.read.jdbc(url, "USER_INDEX", prop)
+    val userBitmapIndex = ClickhouseTool.getUserBitmapIndex(sparkSession)
     userBitmapIndex.createOrReplaceTempView("user_index")
 
     val sql =
@@ -114,14 +106,9 @@ object CalUserPersonBitmap {
           val id = row.getAs[Int]("PORTRAIT_ID")
           val value = row.getAs[String]("PORTRAIT_VALUE")
           val comment = row.getAs[String]("COMMENT")
-          val bitmap = new RoaringBitmap()
           val bitArr =
             row.getAs[mutable.WrappedArray[java.math.BigDecimal]]("bitmapIds")
-          for (x <- bitArr) {
-            bitmap.add(x.intValue())
-          }
-          val ckBitmap =
-            ClickHouseBitmap.wrap(bitmap, ClickHouseDataType.UInt32)
+          val ckBitmap = BitmapUtils.bitmapIdsToClickHouseBitmap(bitArr)
           val stmt = conn.prepareStatement(
             s"insert into TA_PORTRAIT_IMSI_BITMAP " +
               s"(PORTRAIT_ID,PORTRAIT_VALUE,PORTRAIT_BITMAP,COMMENT) values (?,?,?,?)"

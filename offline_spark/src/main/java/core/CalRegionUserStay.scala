@@ -1,14 +1,11 @@
 package core
 
-import com.clickhouse.client.ClickHouseDataType
-import com.clickhouse.client.data.ClickHouseBitmap
 import org.apache.spark.SparkConf
 import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.types.{DoubleType, LongType, StringType, StructType}
-import org.roaringbitmap.RoaringBitmap
+import utils.BitmapUtils
 import utils.ClickhouseTool
 
-import java.util.Properties
 import scala.collection.mutable
 
 /** 执行频率：天
@@ -46,12 +43,7 @@ object CalRegionUserStay {
       .load(regionCellPath)
 
     //加载用户位图索引数据
-    val url = "jdbc:clickhouse://bigdata01:8123"
-    val prop = new Properties()
-    prop.setProperty("user", "default")
-    prop.setProperty("password", "clickhouse")
-
-    val userBitmapIndex = sparkSession.read.jdbc(url, "USER_INDEX", prop)
+    val userBitmapIndex = ClickhouseTool.getUserBitmapIndex(sparkSession)
 
     xdrDf.createOrReplaceTempView("xdr")
     regionCellDf.createOrReplaceTempView("region_cell")
@@ -85,14 +77,9 @@ object CalRegionUserStay {
         it.foreach(row => {
           val regionId = row.getAs[String]("regionId")
           val produce_hour = row.getAs[String]("produce_hour")
-          val bitmap = new RoaringBitmap()
           val bitArr =
             row.getAs[mutable.WrappedArray[java.math.BigDecimal]]("bitmapIds")
-          for (x <- bitArr) {
-            bitmap.add(x.intValue())
-          }
-          val ckBitmap =
-            ClickHouseBitmap.wrap(bitmap, ClickHouseDataType.UInt32)
+          val ckBitmap = BitmapUtils.bitmapIdsToClickHouseBitmap(bitArr)
           val stmt = conn.prepareStatement(
             s"insert into REGION_ID_IMSI_BITMAP " +
               s"(REGION_ID,PRODUCE_HOUR,IMSI_INDEXES) values (?,?,?)"
