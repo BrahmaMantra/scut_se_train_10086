@@ -114,3 +114,32 @@ ORDER BY
                     pass
         data.pepCnt = result.row_count
         return data
+
+    def query_region_inflow_outflow(
+        self, region_id: str, produce_hour: str, portrait_id: int
+    ) -> models.UserCountData:
+        sql = """
+WITH (
+    SELECT
+        IMSI_INDEXES
+    FROM
+        REGION_ID_IMSI_BITMAP
+    WHERE
+        REGION_ID = '{region_id:String}'
+        AND PRODUCE_HOUR = '{produce_hour:String}'
+) AS region_time_res
+SELECT
+    bitmapCardinality(bitmapAnd(region_time_res, PORTRAIT_BITMAP)) AS res
+FROM
+    TA_PORTRAIT_IMSI_BITMAP
+WHERE
+    PORTRAIT_ID = '{portrait_id:Long}';
+        """
+        paramaters = {
+            "region_id": region_id,
+            "produce_hour": produce_hour,
+            "portrait_id": portrait_id,
+        }
+        client = conn.get_db_client()
+        result = client.query(sql, parameters=paramaters)
+        return models.RegionFlowResponse()  # type: ignore

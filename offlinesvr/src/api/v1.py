@@ -26,3 +26,9 @@ def user_list_by_region_and_time(req: m.UserRegionTimePortraitRequest = Depends(
 def region_portrait(req: m.RegionPortraitRequest = Depends()):
     data = Service().query_region_protrait(req.region_id)
     return m.RegionPortraitResponse(data=data)
+
+
+@router.get("/regionInflowOutflow")
+def region_inflow_outflow(req: m.RegionFlowRequest = Depends()):
+    data = Service().query_region_protrait(req.region_id)
+    return data

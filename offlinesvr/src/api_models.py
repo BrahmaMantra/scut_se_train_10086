@@ -48,3 +48,20 @@ class RegionPortraitResponse(BaseModel):
     msg: str = ""
     code: int = 200
     data: RegionPortraitData
+
+class RegionFlowRequest(BaseModel):
+    region_id: str
+    start_time: str
+    end_time: str
+
+class FlowStats(BaseModel):
+    total: int
+    male: int
+    female: int
+    age_10_20: int
+    age_20_40: int
+    age_40_plus: int
+
+class RegionFlowResponse(BaseModel):
+    inflow: FlowStats
+    outflow: FlowStats
